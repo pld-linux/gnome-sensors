@@ -6,7 +6,10 @@ Release:	0.1
 License:	GPL
 Group:		X11/Applications
 Group(de):	X11/Applikationen
+Group(es):	X11/Aplicaciones
 Group(pl):	X11/Aplikacje
+Group(pt_BR):	X11/Aplicações
+Group(pt):	X11/Aplicações
 Source0:	http://www.brendy.addr.com/linux/gnomesensors/GnomeSensors-%{version}.tar.gz
 BuildRequires:	lm_sensors-devel
 BuildRequires:	gnome-libs-devel >= 1.0.0
