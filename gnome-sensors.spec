@@ -2,11 +2,12 @@ Summary:	GNOME applet that monitors hardware sensors
 Summary(pl):	Aplet GNOME do monitorowania sprzêtowych sensorów
 Name:		gnome-sensors
 Version:	0.2.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.brendy.addr.com/linux/gnomesensors/GnomeSensors-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
+Patch1:		%{name}-via.patch
 BuildRequires:	lm_sensors-devel
 BuildRequires:	gnome-libs-devel >= 1.0.0
 BuildRequires:	gnome-core-devel >= 1.1.0
@@ -31,6 +32,7 @@ z sensorów monitoruj±cych stan sprzêtu.
 %prep
 %setup -q -n GnomeSensors-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__gettextize}
