@@ -23,12 +23,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_localstatedir	/var
 
 %description
-GnomeSensors is a simple Gnome Panel applet that displays the current
+GnomeSensors is a simple GNOME Panel applet that displays the current
 readout of any hardware monitoring sensors that are present in your
 computer.
 
 %description -l pl
-GnomeSensors jest ma³ym apletem Gnome wy¶wietlaj±cym wyniki odczytane
+GnomeSensors jest ma³ym apletem GNOME wy¶wietlaj±cym wyniki odczytane
 z sensorów monitoruj±cych stan sprzêtu.
 
 %prep
