@@ -6,6 +6,7 @@ Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.brendy.addr.com/linux/gnomesensors/GnomeSensors-%{version}.tar.gz
+Source1:	%{name}.m4
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-via.patch
 BuildRequires:	lm_sensors-devel
@@ -34,8 +35,12 @@ z sensorów monitoruj±cych stan sprzêtu.
 %patch0 -p1
 %patch1 -p1
 
+install %{SOURCE1} macros/
+
 %build
-%{__gettextize}
+%{__libtoolize}
+%{__aclocal} -I macros
+%{__automake}
 %{__autoconf}
 %configure \
 	--disable-static
