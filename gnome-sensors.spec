@@ -33,7 +33,7 @@ z sensorów monitoruj±cych stan sprzêtu.
 %patch0 -p1
 
 %build
-gettextize --copy --force
+%{__gettextize}
 %{__autoconf}
 %configure \
 	--disable-static
