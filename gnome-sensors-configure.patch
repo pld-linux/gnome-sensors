@@ -1,0 +1,10 @@
+--- GnomeSensors-0.2.0/configure.in~	Sun Nov 28 18:57:28 1999
++++ GnomeSensors-0.2.0/configure.in	Mon Oct 14 23:25:10 2002
+@@ -31,7 +31,6 @@
+ Makefile
+ macros/Makefile
+ src/Makefile
+-pixmaps/Makefile
+ ])
+ 
+ 
