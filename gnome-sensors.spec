@@ -5,7 +5,8 @@ Version:	0.2.0
 Release:	2
 License:	GPL
 Group:		X11/Applications
-Source0:	http://www.brendy.addr.com/linux/gnomesensors/GnomeSensors-%{version}.tar.gz
+Source0:	GnomeSensors-%{version}.tar.gz
+# Source0-md5:	3ebdfddaff3cfb4ca7ad5ee7e48b2002
 Source1:	%{name}.m4
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-via.patch
