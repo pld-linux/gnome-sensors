@@ -34,7 +34,7 @@ z sensorów monitoruj±cych stan sprzêtu.
 
 %build
 gettextize --copy --force
-autoconf
+%{__autoconf}
 %configure \
 	--disable-static
 
