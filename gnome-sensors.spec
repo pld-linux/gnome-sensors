@@ -49,14 +49,12 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	gnorbadir=%{_sysconfdir}/CORBA/servers
 
-gzip -9nf AUTHORS ChangeLog NEWS README
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.gz ChangeLog.gz NEWS.gz README.gz
+%doc AUTHORS ChangeLog NEWS README
 
 %{_sysconfdir}/CORBA/servers/*
 %attr(755,root,root) %{_bindir}/*
