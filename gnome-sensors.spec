@@ -1,4 +1,5 @@
-Summary:	Small applications which embed themselves in the GNOME panel
+Summary:	GNOME applet that monitors hardware sensors
+Summary(pl):	Aplet GNOME do monitorowania sprzêtowych sensorów
 Name:		gnome-sensors
 Version:	0.2.0
 Release:	0.1
@@ -11,6 +12,8 @@ BuildRequires:	lm_sensors-devel
 BuildRequires:	gnome-libs-devel >= 1.0.0
 BuildRequires:	gnome-core-devel >= 1.1.0
 BuildRequires:	gtk+-devel >= 1.2.0
+BuildRequires:	autoconf
+BuildRequires:	gettext-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -21,6 +24,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 GnomeSensors is a simple Gnome Panel applet that displays
 the current readout of any hardware monitoring sensors
 that are present in your computer.
+
+%description -l pl
+GnomeSensors jest ma³ym apletem Gnome wy¶wietlaj±cym wyniki odczytane
+z sensorów monitoruj±cych stan sprzêtu.
 
 %prep
 %setup -q -n GnomeSensors-%{version}
