@@ -9,12 +9,13 @@ Source0:	http://www.brendy.addr.com/linux/gnomesensors/GnomeSensors-%{version}.t
 Source1:	%{name}.m4
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-via.patch
-BuildRequires:	lm_sensors-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	gnome-libs-devel >= 1.0.0
 BuildRequires:	gnome-core-devel >= 1.1.0
 BuildRequires:	gtk+-devel >= 1.2.0
-BuildRequires:	autoconf
-BuildRequires:	gettext-devel
+BuildRequires:	libtool
+BuildRequires:	lm_sensors-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
