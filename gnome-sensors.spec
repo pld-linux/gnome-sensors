@@ -1,26 +1,20 @@
 Summary:	GNOME applet that monitors hardware sensors
 Summary(pl):	Aplet GNOME do monitorowania sprzêtowych sensorów
 Name:		gnome-sensors
-Version:	0.2.0
-Release:	2
-License:	GPL
+Version:	1.4
+Release:	0.1
+License:	GPL v2+
 Group:		X11/Applications
-Source0:	GnomeSensors-%{version}.tar.gz
-# Source0-md5:	3ebdfddaff3cfb4ca7ad5ee7e48b2002
-Source1:	%{name}.m4
-Patch0:		%{name}-configure.patch
-Patch1:		%{name}-via.patch
+Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
+# Source0-md5:	e71ea9fe79cbc281293fa90857a92b04
+URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gnome-libs-devel >= 1.0.0
-BuildRequires:	gnome-core-devel >= 1.1.0
-BuildRequires:	gtk+-devel >= 1.2.0
 BuildRequires:	libtool
 BuildRequires:	lm_sensors-devel
+BuildRequires:	gnome-panel-devel >= 2.0.0
+BuildRequires:	gtk+2-devel >= 2.6.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_sysconfdir	/etc/X11/GNOME
-%define		_localstatedir	/var
 
 %description
 GnomeSensors is a simple GNOME Panel applet that displays the current
@@ -32,19 +26,10 @@ GnomeSensors jest ma³ym apletem GNOME wy¶wietlaj±cym wyniki odczytane
 z sensorów monitoruj±cych stan sprzêtu.
 
 %prep
-%setup -q -n GnomeSensors-%{version}
-%patch0 -p1
-%patch1 -p1
-
-install %{SOURCE1} macros/
+%setup -q -n sensors-applet-%{version}
 
 %build
-%{__libtoolize}
-%{__aclocal} -I macros
-%{__automake}
-%{__autoconf}
-%configure \
-	--disable-static
+%configure 
 
 %{__make}
 
@@ -52,17 +37,16 @@ install %{SOURCE1} macros/
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	gnorbadir=%{_sysconfdir}/CORBA/servers
+	DESTDIR=$RPM_BUILD_ROOT 
 
+%find_lang sensors-applet
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f sensors-applet.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-
-%{_sysconfdir}/CORBA/servers/*
-%attr(755,root,root) %{_bindir}/*
-%{_datadir}/applets/Monitors/*
-%{_pixmapsdir}/*.xpm
+%attr(755,root,root) %{_libdir}/sensors-applet
+%{_libdir}/bonobo/servers/SensorsApplet.server
+%{_pixmapsdir}/sensors-applet-icon.png
+%{_datadir}/gnome-2.0/ui/SensorsApplet.xml
