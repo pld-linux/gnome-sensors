@@ -12,8 +12,10 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	lm_sensors-devel
+BuildRequires:	gettext-devel
 BuildRequires:	gnome-panel-devel >= 2.0.0
 BuildRequires:	gtk+2-devel >= 2:2.6.0
+BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
