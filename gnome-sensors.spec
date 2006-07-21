@@ -1,12 +1,12 @@
 Summary:	GNOME applet that monitors hardware sensors
 Summary(pl):	Aplet GNOME do monitorowania sprzêtowych sensorów
 Name:		gnome-sensors
-Version:	1.7.1
+Version:	1.7.4
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
-# Source0-md5:	eed4b336fa2ec3fea5c12c725d5cbdd8
+# Source0-md5:	ca02bb8c9641468ebb3350b318ac2a86
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
