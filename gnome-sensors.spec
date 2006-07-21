@@ -36,7 +36,7 @@ computer.
 
 %description -l pl
 GNOME Sensors jest prostym apletem wy¶wietlaj±cym aktualne odczyty
-dowolnych czujników monitoruj±cych obecych w komputerze.
+dowolnych czujników monitoruj±cych obecnych w komputerze.
 
 %prep
 %setup -q -n %{_orig_name}-%{version}
