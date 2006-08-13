@@ -4,29 +4,30 @@
 Summary:	GNOME applet that monitors hardware sensors
 Summary(pl):	Aplet GNOME monitoruj±cy czujniki sprzêtowe
 Name:		gnome-sensors
-Version:	1.7.4
-Release:	2
+Version:	1.7.6
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
-# Source0-md5:	ca02bb8c9641468ebb3350b318ac2a86
+# Source0-md5:	936f3551b07cfbfd4c454fe952932c0b
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
-BuildRequires:	gnome-doc-utils >= 0.7.1
-BuildRequires:	gnome-panel-devel >= 2.14.2
-BuildRequires:	gtk+2-devel >= 2:2.10.0
+BuildRequires:	gnome-doc-utils >= 0.7.2
+BuildRequires:	gnome-panel-devel >= 2.15.91
+BuildRequires:	gtk+2-devel >= 2:2.10.1
 BuildRequires:	libnotify-devel >= 0.4.2
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs >= 1.1.17
 BuildRequires:	lm_sensors-devel >= 2.10.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	scrollkeeper
-Requires(post,postun):	gtk+2 >= 2:2.10.0
+Requires(post,postun):	gtk+2 >= 2:2.10.1
 Requires(post,postun):	scrollkeeper
 Requires:	hicolor-icon-theme
-Requires:	gnome-panel >= 2.14.2
+Requires:	gnome-panel >= 2.15.91
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -42,7 +43,6 @@ dowolnych czujników monitoruj±cych obecnych w komputerze.
 %setup -q -n %{_orig_name}-%{version}
 
 %build
-LDFLAGS="%{rpmldflags} -Wl,--as-needed"
 %configure \
 	--disable-scrollkeeper
 %{__make}
@@ -60,11 +60,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %scrollkeeper_update_post
-gtk-update-icon-cache -qf %{_datadir}/icons/hicolor
+%update_icon_cache hicolor
 
 %postun
 %scrollkeeper_update_post
-gtk-update-icon-cache -qf %{_datadir}/icons/hicolor
+%update_icon_cache hicolor
 
 %files -f sensors-applet.lang
 %defattr(644,root,root,755)
@@ -74,4 +74,5 @@ gtk-update-icon-cache -qf %{_datadir}/icons/hicolor
 %{_iconsdir}/hicolor/*/*/sensors-*
 %{_pixmapsdir}/sensors-applet
 %{_datadir}/gnome-2.0/ui/SensorsApplet.xml
-%{_datadir}/omf/sensors-applet
+%dir %{_omf_dest_dir}/%{_orig_name}
+%{_omf_dest_dir}/%{_orig_name}/*-C.omf
