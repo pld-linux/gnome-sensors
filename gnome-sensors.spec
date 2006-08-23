@@ -4,19 +4,19 @@
 Summary:	GNOME applet that monitors hardware sensors
 Summary(pl):	Aplet GNOME monitoruj±cy czujniki sprzêtowe
 Name:		gnome-sensors
-Version:	1.7.7
+Version:	1.7.8
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
-# Source0-md5:	8632f18d0ccbd4d65dba398ba9c9194f
+# Source0-md5:	0d71eaae6f4bad3c1b6d44d71929d954
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
 BuildRequires:	gnome-doc-utils >= 0.7.2
-BuildRequires:	gnome-panel-devel >= 2.15.91
-BuildRequires:	gtk+2-devel >= 2:2.10.1
+BuildRequires:	gnome-panel-devel >= 2.15.92
+BuildRequires:	gtk+2-devel >= 2:2.10.2
 BuildRequires:	libnotify-devel >= 0.4.2
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs >= 1.1.17
@@ -24,10 +24,10 @@ BuildRequires:	lm_sensors-devel >= 2.10.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	scrollkeeper
-Requires(post,postun):	gtk+2 >= 2:2.10.1
+Requires(post,postun):	gtk+2 >= 2:2.10.2
 Requires(post,postun):	scrollkeeper
 Requires:	hicolor-icon-theme
-Requires:	gnome-panel >= 2.15.91
+Requires:	gnome-panel >= 2.15.92
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
