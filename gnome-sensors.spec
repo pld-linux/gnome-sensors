@@ -2,7 +2,7 @@
 %define		_orig_name	sensors-applet
 #
 Summary:	GNOME applet that monitors hardware sensors
-Summary(pl.UTF-8):   Aplet GNOME monitorujący czujniki sprzętowe
+Summary(pl.UTF-8):	Aplet GNOME monitorujący czujniki sprzętowe
 Name:		gnome-sensors
 <<<<<<< gnome-sensors.spec
 Version:	1.6.1
