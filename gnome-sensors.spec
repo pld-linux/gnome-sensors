@@ -4,34 +4,20 @@
 Summary:	GNOME applet that monitors hardware sensors
 Summary(pl.UTF-8):	Aplet GNOME monitorujący czujniki sprzętowe
 Name:		gnome-sensors
-<<<<<<< gnome-sensors.spec
-Version:	1.6.1
-Release:	0.1
-=======
 Version:	1.7.8
 Release:	1
->>>>>>> 1.30
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
-<<<<<<< gnome-sensors.spec
-# Source0-md5:	b1feac15a8354fe0f3fd62a16b38293d
-=======
 # Source0-md5:	0d71eaae6f4bad3c1b6d44d71929d954
->>>>>>> 1.30
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
-<<<<<<< gnome-sensors.spec
-BuildRequires:	gnome-panel-devel >= 2.8.0
-BuildRequires:	gtk+2-devel >= 2:2.6.0
-=======
 BuildRequires:	gnome-doc-utils >= 0.7.2
 BuildRequires:	gnome-panel-devel >= 2.15.92
 BuildRequires:	gtk+2-devel >= 2:2.10.2
 BuildRequires:	libnotify-devel >= 0.4.2
->>>>>>> 1.30
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs >= 1.1.17
 BuildRequires:	lm_sensors-devel >= 2.10.0
@@ -85,13 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/sensors-applet
 %{_libdir}/bonobo/servers/SensorsApplet.server
-<<<<<<< gnome-sensors.spec
-%dir %{_pixmapsdir}/sensors-applet
-%{_pixmapsdir}/sensors-applet/*
-=======
 %{_iconsdir}/hicolor/*/*/sensors-*
 %{_pixmapsdir}/sensors-applet
->>>>>>> 1.30
 %{_datadir}/gnome-2.0/ui/SensorsApplet.xml
 %dir %{_omf_dest_dir}/%{_orig_name}
 %{_omf_dest_dir}/%{_orig_name}/*-C.omf
