@@ -1,0 +1,294 @@
+diff -ur sensors-applet-1.8.1.orig/src/libsensors-sensors-interface.c sensors-applet-1.8.1/src/libsensors-sensors-interface.c
+--- sensors-applet-1.8.1.orig/src/libsensors-sensors-interface.c	2007-07-02 15:36:08.000000000 +0200
++++ sensors-applet-1.8.1/src/libsensors-sensors-interface.c	2007-11-12 16:25:04.000000000 +0100
+@@ -42,6 +42,8 @@
+ 
+ #include "libsensors-sensors-interface.h"
+ 
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
++
+ #define LIBSENSORS_CONFIG_FILE "/etc/sensors.conf"
+ #define LIBSENSORS_ALTERNATIVE_CONFIG_FILE "/usr/local/etc/sensors.conf"
+ 
+@@ -81,6 +83,8 @@
+ };
+ static regex_t temp_exps_comp[TEMP_EXPS_LENGTH];
+ 
++#endif /* libsensors3 only code */
++
+ static regex_t uri_re;
+ 
+ /* for error handling */
+@@ -107,6 +111,7 @@
+ 	return quark;
+ }
+ 
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
+ static char *get_chip_name (const sensors_chip_name *chip) {
+ 	char *name;
+ 
+@@ -152,6 +157,7 @@
+ 
+ 	return CURRENT_SENSOR; /* default :) */
+ }
++#endif /* libsensors3 code */
+ 
+ static IconType get_sensor_icon (SensorType type) {
+ 	switch (type) {
+@@ -164,6 +170,7 @@
+ 	}
+ }
+ 
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
+ /* If a sensor is 'interesting' to us then return its label, otherwise NULL. */
+ static char *get_sensor_interesting_label (sensors_chip_name chip, int feature) {
+ 	char *label;
+@@ -181,6 +188,26 @@
+ 	return NULL;
+ }
+ 
++static void get_sensor_min_max(const sensors_chip_name *chip, int n1, int n2,
++                               int number, gdouble *low_value,
++                               gdouble *high_value) {
++	const sensors_feature_data *data;
++	double value;
++	
++	/* The sub features are returned directly after the main feature by
++	   sensors_get_all_features(), so no need to iterate over all features */
++	while ((data = sensors_get_all_features (*chip, &n1, &n2)) != NULL &&
++			data->mapping == number) {
++		if ((data->mode & SENSORS_MODE_R) && 
++		    (sensors_get_feature(*chip, data->number, &value) == 0)) {
++			if (!strcmp(data->name + strlen(data->name) - 4, "_min"))
++				*low_value = value;
++			if (!strcmp(data->name + strlen(data->name) - 4, "_max"))
++				*high_value = value;
++		}
++	}
++}
++
+ static void libsensors_sensors_interface_get_sensors(SensorsApplet *sensors_applet) {
+ 	FILE *file;
+ 	const sensors_chip_name *chip;
+@@ -251,6 +288,153 @@
+ 	}
+ }
+ 
++#else /* libsensors 4 code */
++
++static void libsensors_sensors_interface_get_sensors(SensorsApplet *sensors_applet) {
++	const sensors_chip_name *chip;
++	int i;
++
++	if (sensors_init(NULL) != 0)
++		return;
++
++	/* libsensors exposes a number of chips -  ... */
++	i = 0;
++	while ((chip = sensors_get_detected_chips (NULL, &i)) != NULL) {
++		char chip_name[512];
++		const sensors_feature *feature;
++		const sensors_subfeature *sub_feature;
++		int feature_nr, n1 = 0;
++		sensors_snprintf_chip_name(chip_name, sizeof(chip_name), chip);
++
++		/* ... each of which has one or more 'features' ... */
++		while ((feature = sensors_get_features (chip, &n1)) != NULL) {
++			char *label;
++			SensorType type;
++			gboolean visible;
++			IconType icon;
++			gdouble low_value, high_value;
++			double value;
++			gchar *url;
++	
++			switch (feature->type) {
++			case SENSORS_FEATURE_IN:
++				type = VOLTAGE_SENSOR;
++				sub_feature = sensors_get_subfeature(chip,
++						feature,
++						SENSORS_SUBFEATURE_IN_INPUT);
++				if (!sub_feature)
++					continue;
++				feature_nr = sub_feature->number;
++				break;
++			case SENSORS_FEATURE_FAN:
++				type = FAN_SENSOR;
++				sub_feature = sensors_get_subfeature(chip,
++						feature,
++						SENSORS_SUBFEATURE_FAN_INPUT);
++				if (!sub_feature)
++					continue;
++				feature_nr = sub_feature->number;
++				break;
++			case SENSORS_FEATURE_TEMP:
++				type = TEMP_SENSOR;
++				sub_feature = sensors_get_subfeature(chip,
++						feature,
++						SENSORS_SUBFEATURE_TEMP_INPUT);
++				if (!sub_feature)
++					continue;
++				feature_nr = sub_feature->number;
++				break;
++			default:
++				continue;
++			}
++
++			visible = (type == TEMP_SENSOR ? TRUE : FALSE);
++			icon = get_sensor_icon(type);
++			
++			// the 'path' contains all the information we need to
++			// identify this sensor later
++			url = g_strdup_printf ("sensor://%s/%d", chip_name,
++						feature_nr);
++
++			// get low and high values
++			sensors_applet_get_default_limits(type, &low_value,
++								&high_value);
++			switch (feature->type) {
++			case SENSORS_FEATURE_IN:
++				if ((sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_IN_MIN)) &&
++				    !sensors_get_value(chip,
++				    	sub_feature->number, &value))
++				{
++				    	low_value = value;
++				}
++
++				if ((sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_IN_MAX)) &&
++				    !sensors_get_value(chip,
++				    	sub_feature->number, &value))
++				{
++				    	high_value = value;
++				}
++				break;
++			case SENSORS_FEATURE_FAN:
++				if ((sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_FAN_MIN)) &&
++				    !sensors_get_value(chip,
++				    	sub_feature->number, &value))
++				{
++				    	low_value = value;
++				}
++				break;
++			case SENSORS_FEATURE_TEMP:
++				if ((sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_TEMP_MIN)) &&
++				    !sensors_get_value(chip,
++				    	sub_feature->number, &value))
++				{
++				    	low_value = value;
++				}
++
++				if (((sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_TEMP_MAX)) ||
++				    (sub_feature = sensors_get_subfeature(
++					chip, feature,
++					SENSORS_SUBFEATURE_TEMP_CRIT))) &&
++				    !sensors_get_value(chip,
++				    	sub_feature->number, &value))
++				{
++				    	high_value = value;
++				}
++			}
++			
++			label = sensors_get_label(chip, feature);
++			if (!label)
++				label = feature->name;
++				
++			// the id identifies a particular sensor for the user;
++			// we default to the label returned by libsensors
++			sensors_applet_add_sensor_full_details(
++				sensors_applet, url, label, label,
++				LIBSENSORS, type, visible,
++				low_value, high_value, FALSE,
++				"", "", 0, 1.0, 0.0, icon,
++				DEFAULT_GRAPH_COLOR);
++
++			if (label != feature->name)
++				free(label);
++
++			g_free (url);
++		}
++	}
++}
++
++#endif /* libsensor3 / libsensors4 code */
++
+ gdouble libsensors_sensors_interface_get_sensor_value(const gchar *path, 
+                                                       const gchar *id, 
+                                                       SensorType type,
+@@ -263,6 +447,7 @@
+ 		char *desired_chip_s;
+ 		sensors_chip_name desired_chip;
+ 		int feature;
++		double value;
+ 
+ 		int i;
+ 		const sensors_chip_name *found_chip;
+@@ -272,10 +457,10 @@
+ 			g_set_error (error, LIBSENSORS_ERROR, LIBSENSORS_CHIP_PARSE_ERROR, "Error parsing chip name");
+ 		else {
+ 			feature = atoi(path + m[2].rm_so);
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
+ 			/* search for the correct chip */
+ 			for (i = 0; (found_chip = sensors_get_detected_chips (&i)); ) {
+ 				if (sensors_match_chip (desired_chip, *found_chip)) {
+-					double value;
+ 					/* retrieve the value of the feature */
+ 					if (sensors_get_feature (*found_chip, feature, &value) == 0)
+ 						result = value;
+@@ -285,6 +470,17 @@
+ 					break;
+ 				}
+ 			}
++#else
++			/* retrieve the value of the feature */
++			i = 0;
++			found_chip = sensors_get_detected_chips(&desired_chip, &i);
++			if (found_chip) {
++				if (sensors_get_value (found_chip, feature, &value) == 0)
++					result = value;
++				else
++					g_set_error (error, LIBSENSORS_ERROR, LIBSENSORS_MISSING_FEATURE_ERROR, "Error retrieving sensor value");
++			}
++#endif
+ 			if (found_chip == NULL)
+ 				g_set_error (error, LIBSENSORS_ERROR, LIBSENSORS_CHIP_NOT_FOUND_ERROR, "Chip not found");
+ 		}
+@@ -306,6 +502,7 @@
+                 return;
+         }
+ 
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
+ 	for (i = 0; i < VOLTAGE_EXPS_LENGTH; ++i) {
+ 		if (regcomp (&volt_exps_comp[i], volt_exps[i], REG_ICASE) != 0) {
+                         g_debug("Error compiling regexp...not initing libsensors sensors interface");
+@@ -326,18 +523,21 @@
+                         return;
+                 }
+         }
++#endif
+         
+ 	sensors_applet_register_sensors_interface(sensors_applet,
+ 						  LIBSENSORS,
+ 						  libsensors_sensors_interface_get_sensor_value);
+ 	libsensors_sensors_interface_get_sensors(sensors_applet);
+ 
++#if SENSORS_API_VERSION < 0x400 /* libsensor 3 code */
+ 	for (i = 0; i < VOLTAGE_EXPS_LENGTH; ++i)
+ 		regfree (&volt_exps_comp[i]);
+ 	for (i = 0; i < FAN_EXPS_LENGTH; ++i)
+ 		regfree (&fan_exps_comp[i]);
+ 	for (i = 0; i < TEMP_EXPS_LENGTH; ++i)
+ 		regfree (&temp_exps_comp[i]);
++#endif
+ 
+ }
+ 
