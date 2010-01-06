@@ -13,6 +13,7 @@ Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	gnome-common
 BuildRequires:	gnome-doc-utils >= 0.12.0
