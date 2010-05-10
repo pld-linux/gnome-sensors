@@ -11,8 +11,6 @@ Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
 # Source0-md5:	b5cee7e7bfef4c1a62d6d9a9b92c7bc3
 URL:		http://sensors-applet.sourceforge.net/
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	gnome-common
@@ -25,6 +23,7 @@ BuildRequires:	libnotify-devel >= 0.4.2
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs >= 1.1.17
 BuildRequires:	lm_sensors-devel >= 3.0.0
+BuildRequires:	libXNVCtrl-devel >= 195.36.24
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(find_lang) >= 1.23
 BuildRequires:	rpmbuild(macros) >= 1.311
@@ -85,14 +84,10 @@ Statyczna biblioteka apletu GNOME Sensors.
 %setup -q -n %{_orig_name}-%{version}
 
 %build
-%{__intltoolize}
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
 %configure \
-	--disable-scrollkeeper
+	--disable-scrollkeeper \
+	--with-aticonfig \
+	--with-nvidia
 %{__make}
 
 %install
