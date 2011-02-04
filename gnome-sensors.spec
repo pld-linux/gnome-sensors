@@ -5,10 +5,10 @@ Summary:	GNOME applet that monitors hardware sensors
 Summary(pl.UTF-8):	Aplet GNOME monitorujący czujniki sprzętowe
 Name:		gnome-sensors
 Version:	2.2.5
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://dl.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
+Source0:	http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
 # Source0-md5:	b5cee7e7bfef4c1a62d6d9a9b92c7bc3
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	docbook-dtd412-xml
@@ -18,17 +18,18 @@ BuildRequires:	gnome-doc-utils >= 0.12.0
 BuildRequires:	gnome-panel-devel >= 2.22.0
 BuildRequires:	gtk+2-devel >= 2:2.10.2
 BuildRequires:	intltool >= 0.40.0
+BuildRequires:	libXNVCtrl-devel >= 195.36.24
 BuildRequires:	libgnomeui-devel >= 2.22.0
 BuildRequires:	libnotify-devel >= 0.4.2
 BuildRequires:	libtool
 BuildRequires:	libxslt-progs >= 1.1.17
 BuildRequires:	lm_sensors-devel >= 3.0.0
-BuildRequires:	libXNVCtrl-devel >= 195.36.24
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(find_lang) >= 1.23
 BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	scrollkeeper
-Requires(post,postun):	gtk+2 >= 2:2.10.2
+Requires(post,postun):	gtk-update-icon-cache
+Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	scrollkeeper
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	hicolor-icon-theme
