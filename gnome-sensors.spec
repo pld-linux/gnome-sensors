@@ -12,7 +12,7 @@ Source0:	http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{versio
 # Source0-md5:	b5cee7e7bfef4c1a62d6d9a9b92c7bc3
 URL:		http://sensors-applet.sourceforge.net/
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gnome-common
 BuildRequires:	gnome-doc-utils >= 0.12.0
 BuildRequires:	gnome-panel-devel >= 2.22.0
